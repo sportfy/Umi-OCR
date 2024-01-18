@@ -11,6 +11,8 @@ from ..ocr.tbpu import IgnoreArea
 
 import fitz  # PyMuPDF
 import time
+from PIL import Image
+from io import BytesIO
 
 
 class FitzOpen:
@@ -69,19 +71,20 @@ class _MissionDocClass(Mission):
             return "[Error] 页数列表为空"
         if not all(isinstance(item, int) for item in pageList):
             return "[Error] 页数列表内容非整数"
-        # =============== 段落合并 ===============
+        # =============== tbpu文本块后处理 msnInfo["tbpu"] ===============
         argd = msnInfo["argd"]  # 参数
         msnInfo["tbpu"] = []
+        # 忽略区域
+        if "tbpu.ignoreArea" in argd:
+            iArea = argd["tbpu.ignoreArea"]
+            if type(iArea) == list and len(iArea) > 0:
+                msnInfo["tbpu"].append(IgnoreArea(iArea))
+        # 段落合并
         if "tbpu.merge" in argd and argd["tbpu.merge"] != "None":
             if argd["tbpu.merge"] in tbpuMerge:
                 msnInfo["tbpu"].append(tbpuMerge[argd["tbpu.merge"]]())
             else:
                 print(f'[Error] 段落合并参数不存在： {argd["tbpu.merge"]}')
-        # =============== 忽略区域 ===============
-        if "tbpu.ignoreArea" in argd:
-            iArea = argd["tbpu.ignoreArea"]
-            if type(iArea) == list and len(iArea) > 0:
-                msnInfo["tbpu"].append(IgnoreArea(iArea))
         return self.addMissionList(msnInfo, pageList)
 
     def msnTask(self, msnInfo, pno):  # 执行msn。pno为当前页数
@@ -101,19 +104,36 @@ class _MissionDocClass(Mission):
         if ocrMode == "fullPage":  # 模式：整页强制OCR
             p = page.get_pixmap()
             bytes = p.tobytes("png")
-            imgs.append({"bytes": bytes})
+            imgs.append({"bytes": bytes, "xy": (0, 0)})
         else:
             # 获取元素 https://pymupdf.readthedocs.io/en/latest/_images/img-textpage.png
             p = page.get_text("dict")
             for t in p["blocks"]:
                 # 图片
                 if t["type"] == 1 and (ocrMode == "imageOnly" or ocrMode == "mixed"):
-                    imgs.append({"bytes": t["image"]})
+                    bbox = t["bbox"]
+                    # 图片视觉大小
+                    w1, h1 = bbox[2] - bbox[0], bbox[3] - bbox[1]
+                    # 图片实际大小
+                    with Image.open(BytesIO(t["image"])) as pimg:
+                        w2, h2 = pimg.size
+                    scale = w1 / w2  # 图片缩放比例
+
+                    imgs.append(
+                        {"bytes": t["image"], "xy": (bbox[0], bbox[1]), "scale": scale}
+                    )
                 # 文本
                 elif t["type"] == 0 and (ocrMode == "textOnly" or ocrMode == "mixed"):
                     for line in t["lines"]:
                         for span in line["spans"]:
-                            tb = {"box": span["bbox"], "text": span["text"], "score": 1}
+                            b = span["bbox"]
+                            box = [
+                                [b[0], b[1]],
+                                [b[2], b[1]],
+                                [b[2], b[3]],
+                                [b[0], b[3]],
+                            ]
+                            tb = {"box": box, "text": span["text"], "score": 1}
                             tbs.append(tb)
         # 仅提取文本时任务速度过快，频繁回调会导致UI卡死，因此故意引入延迟
         if ocrMode == "textOnly":
@@ -121,13 +141,35 @@ class _MissionDocClass(Mission):
 
         # =============== 调用OCR，将 imgs 的内容提取出来放入 tbs ===============
         if imgs:
-            ocrList = MissionOCR.addMissionWait(argd, imgs)
+            # 提取 "ocr." 开头的参数，组装OCR参数字典
+            ocrArgd = {}
+            for k in argd:
+                if k.startswith("ocr."):
+                    ocrArgd[k] = argd[k]
+            # 调用OCR，堵塞等待任务完成
+            ocrList = MissionOCR.addMissionWait(ocrArgd, imgs)
+            # 整理OCR结果
             for o in ocrList:
                 res = o["result"]
                 if res["code"] == 100:
-                    tbs += res["data"]
+                    x, y = o["xy"]
+                    scale = o["scale"]
+                    for r in res["data"]:
+                        # 将图片相对坐标 转为 页面绝对坐标
+                        for bi in range(4):
+                            r["box"][bi][0] = r["box"][bi][0] * scale + x
+                            r["box"][bi][1] = r["box"][bi][1] * scale + y
+                        tbs.append(r)
                 elif res["code"] != 101:
                     errMsg += f'[Error] OCR code:{res["code"]} msg:{res["data"]}\n'
+
+        # =============== tbpu文本块后处理 ===============
+        size = {"w": round(page.rect.width), "h": round(page.rect.height)}
+        if msnInfo["tbpu"]:
+            for tbpu in msnInfo["tbpu"]:
+                tbs = tbpu.run(tbs, size)
+        # 将本页信息填入 msnInfo
+        msnInfo["pageInfo"] = size
 
         # =============== 组装结果字典 resDict ===============
         if errMsg:
