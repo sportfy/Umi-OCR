@@ -42,8 +42,8 @@ QtObject {
                 ["multi_line", qsTr("多栏-单行")],
                 ["single_para", qsTr("单栏-自然段")],
                 ["single_line", qsTr("单栏-单行")],
-                ["single_code", qsTr("单栏-代码段")],
-                ["", qsTr("不做处理")],
+                // ["single_code", qsTr("单栏-代码段")], // TODO
+                ["none", qsTr("不做处理")],
             ],
         }
     }
