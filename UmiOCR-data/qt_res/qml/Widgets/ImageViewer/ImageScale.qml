@@ -156,7 +156,7 @@ Rectangle {
 
     // 图片填满组件，不裁切
     function imageFullFit() {
-        if(showImage.source == "") return
+        if(showImage.source == "" || imageSW <= 0) return
         iRoot.scale = Math.min(flickable.width/imageSW, flickable.height/imageSH)
         // 图片中心对齐相框
         flickable.contentY =  - (flickable.height - showImageContainer.height)/2
