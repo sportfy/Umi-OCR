@@ -66,6 +66,16 @@ Rectangle {
             qmlapp.popup.simple(qsTr("复制图片失败"), res)
     }
 
+    // 用系统默认应用打开图片
+    function openImage() {
+        if(showImage.source == "") return
+        const res = qmlapp.imageManager.openImage(showImage.source)
+        if(res === "[Success]")
+            qmlapp.popup.simple(qsTr("打开图片"), "")
+        else
+            qmlapp.popup.simple(qsTr("打开图片失败"), res)
+    }
+
     // 保存当前图片
     function saveImage() {
         if(showImage.source == "") return
@@ -117,7 +127,7 @@ Rectangle {
     }
 
     // 缩放，传入 flag>0 放大， <0 缩小 ，0回归100%。以相框中心为锚点。
-    function imageScaleAddSub(flag, step=0.1) {
+    function imageScaleAddSub(flag=0, step=0.1) {
         if(showImage.status != Image.Ready) return
         // 计算缩放比例
         let s = 1.0 // flag==0 时复原
