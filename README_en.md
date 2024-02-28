@@ -37,6 +37,9 @@
   <a href="https://github.com/hiroi-sora/Umi-OCR/forks">
     <img src="https://img.shields.io/github/forks/hiroi-sora/Umi-OCR?style=flat-square" alt="forks">
   </a>
+  <a href="https://hosted.weblate.org/engage/umi-ocr/">
+    <img src="https://hosted.weblate.org/widget/umi-ocr/svg-badge.svg" alt="翻译状态">
+  </a>
 </p>
 
 <div align="center">
@@ -80,8 +83,10 @@ If you need to manually switch languages, please refer to the following figure, 
 <p align="center"><img src="https://tupian.li/images/2023/11/19/65599c3f9e600.png" alt="1-标题-1.png" style="width: 80%;"></p>
 
 ### Help us translate / 帮助我们翻译！
-- Translate `Readme_en.md` 文档
-- Translate [Software Interface / 软件界面](dev-tools/i18n)
+
+You can participate in translation work online on Weblate:
+
+https://hosted.weblate.org/engage/umi-ocr/
 
 ## Tabbed Interface
 

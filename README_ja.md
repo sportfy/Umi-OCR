@@ -40,6 +40,9 @@
   <a href="https://github.com/hiroi-sora/Umi-OCR/forks">
     <img src="https://img.shields.io/github/forks/hiroi-sora/Umi-OCR?style=flat-square" alt="フォーク">
   </a>
+  <a href="https://hosted.weblate.org/engage/umi-ocr/">
+    <img src="https://hosted.weblate.org/widget/umi-ocr/svg-badge.svg" alt="翻译状态">
+  </a>
 </p>
 
 <div align="center">
@@ -82,9 +85,11 @@ Umi-OCRは、インターフェースの複数の言語をサポートしてい�
 
 <p align="center"><img src="https://tupian.li/images/2023/11/19/65599c3f9e600.png" alt="1-タイトル-1.png" style="width: 80%;"></p>
 
-### 翻訳を手伝ってください / 翻訳を手伝う！
-- `Readme_ja.md`ドキュメントの翻訳
-- [ソフトウェアインターフェース](dev-tools/i18n)の翻訳
+### 翻訳を手伝ってください
+
+Weblateオンラインで翻訳作業に参加できます:
+
+https://hosted.weblate.org/engage/umi-ocr/
 
 ## タブインターフェース
 
