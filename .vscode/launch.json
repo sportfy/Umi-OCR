@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "主程序",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/UmiOCR-data/main.py", // 启动主程序
             "cwd": "${workspaceFolder}", // 工作目录，与启动器exe一致
@@ -19,10 +19,38 @@
             "args": []
         },
         {
-            "name": "翻译组件",
-            "type": "python",
+            "name": "lupdate_all", // 更新所有 ts 翻译文件
+            "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/UmiOCR-data/main.py",
+            "program": "${workspaceFolder}/dev-tools/i18n/lupdate_all.py",
+            "cwd": "${workspaceFolder}/dev-tools/i18n",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYDEVD_DISABLE_FILE_VALIDATION": "1",
+            },
+            "python": "${workspaceFolder}/UmiOCR-data/runtime/python.exe",
+            "args": []
+        },
+        {
+            "name": "lrelease_all", // 编译所有 qm 翻译文件
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/dev-tools/i18n/lrelease_all.py",
+            "cwd": "${workspaceFolder}/dev-tools/i18n",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYDEVD_DISABLE_FILE_VALIDATION": "1",
+            },
+            "python": "${workspaceFolder}/UmiOCR-data/runtime/python.exe",
+            "args": []
+        },
+        {
+            "name": "release", // 创建 Umi-OCR 发行包
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/release.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "justMyCode": true,
@@ -30,14 +58,11 @@
                 "PYDEVD_DISABLE_FILE_VALIDATION": "1",
             },
             "python": "${workspaceFolder}/UmiOCR-data/runtime/python.exe",
-            "args": [
-                "--import_module",
-                "../dev-tools/i18n"
-            ]
+            "args": []
         },
         {
             "name": "当前文件",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}", // 启动当前文件
             "cwd": "${fileDirname}", // 工作目录，与当前文件一致
