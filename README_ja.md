@@ -3,13 +3,13 @@
         中文
     </a>
     <span> • </span>
-    <span>
-        日本語
-    </span>
-    <span> • </span>
     <a href="README_en.md">
         English
     </a>
+    <span> • </span>
+    <span>
+        <b>日本語</b>
+    </span>
 </p>
 
 <p align="center">
@@ -64,6 +64,30 @@
 - **GitHub** https://github.com/hiroi-sora/Umi-OCR/releases/latest
 - **Source Forge** https://sourceforge.net/projects/umi-ocr
 - **Lanzou (蓝奏云)** https://hiroi-sora.lanzoul.com/s/umi-ocr
+
+<details>
+<summary><b>• Scoop インストーラー</b></summary>
+
+[Scoop](https://scoop.sh/) はWindowsで動作するコマンドラインインストーラーで、複数のアプリケーションを簡単に管理できます。まず Scoop をインストールし、次に以下のコマンドを使用して `Umi-OCR` をインストールしてください：
+
+- `extras` バケットを追加：
+```
+scoop bucket add extras
+```
+
+- （オプション1）Umi-OCR をインストール（ `Rapid-OCR` エンジン付属、互換性が高い）：
+```
+scoop install extras/umi-ocr
+```
+
+- （オプション2）Umi-OCR をインストール（ `Paddle-OCR` エンジン付属、やや高速）：
+```
+scoop install extras/umi-ocr-paddle
+```
+
+- 両方を同時にインストールしないでください。ショートカットが上書きされる可能性があります。しかし、[プラグイン](https://github.com/hiroi-sora/Umi-OCR_plugins) を追加することで、異なるOCRエンジンをいつでも切り替えることができます。
+
+</details>
 
 ## はじめに
 

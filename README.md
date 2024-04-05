@@ -1,19 +1,16 @@
 <p align="left">
     <span>
-        中文
+        <b>中文</b>
     </span>
-    <span> • </span>
-    <a href="README_ja.md">
-        日本語
-    </a>
     <span> • </span>
     <a href="README_en.md">
         English
     </a>
+    <span> • </span>
+    <a href="README_ja.md">
+        日本語
+    </a>
 </p>
-
-
-
 
 <p align="center">
   <a href="https://github.com/hiroi-sora/Umi-OCR">
@@ -88,7 +85,7 @@
   - [忽略区域](#忽略区域) - 排除截图水印处的文字
 - [二维码](#二维码) 支持扫码或生成二维码图片
 - [文档识别](#文档识别) 从PDF扫描件中提取文本，或转为双层可搜索PDF
-- [全局设置](#全局设置) 添加更多PP-OCR支持的语言模型库！
+- [全局设置](#全局设置)
 - [命令行调用](docs/README_CLI.md)
 - [HTTP接口](docs/README_HTTP.md)
 - [构建项目](#构建项目)
@@ -104,6 +101,31 @@
 - **蓝奏云** https://hiroi-sora.lanzoul.com/s/umi-ocr （国内推荐，免注册/无限速）
 - **GitHub** https://github.com/hiroi-sora/Umi-OCR/releases/latest
 - **Source Forge** https://sourceforge.net/projects/umi-ocr
+
+<details>
+<summary><b>•&nbsp;&nbsp;Scoop Installer</b>（点击展开）</summary>
+
+[Scoop](https://scoop.sh/) 是一款Windows下的命令行安装程序，可方便地管理多个应用。您可以先安装 Scoop ，再使用以下指令安装 `Umi-OCR` ：
+
+- 添加 `extras` 桶：
+```
+scoop bucket add extras
+```
+
+- （可选1）安装 Umi-OCR（自带 `Rapid-OCR` 引擎，兼容性好）：
+```
+scoop install extras/umi-ocr
+```
+
+- （可选2）安装 Umi-OCR（自带 `Paddle-OCR` 引擎，速度稍快）：
+```
+scoop install extras/umi-ocr-paddle
+```
+
+- 不要同时安装二者，快捷方式可能会被覆盖。但您可以额外导入 [插件](https://github.com/hiroi-sora/Umi-OCR_plugins) ，随时切换不同OCR引擎。
+
+</details>
+
 
 ## 开始使用
 
